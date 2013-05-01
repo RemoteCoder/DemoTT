@@ -7,9 +7,7 @@ gem 'rails', '3.2.13'
 
 #gem 'sqlite3'
 gem 'libv8', '~> 3.11.8'
-group :development do
   gem 'mysql2'
-end
 
 gem 'therubyracer'
 
@@ -23,9 +21,6 @@ end
 
 gem 'jquery-rails', '2.0.2'
 
-group :production do
-  gem 'pg', '0.12.2'
-end
 
 
 # To use ActiveModel has_secure_password
