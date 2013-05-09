@@ -4,8 +4,11 @@ DemoTt::Application.routes.draw do
   get "static_pages/help"
 
   resources :users
+  resources :sessions, only: [:new, :create, :destroy]
+  match '/signup',  to: 'users#new'
+  match '/signin',  to: 'sessions#new'
+  match '/signout', to: 'sessions#destroy', via: :delete
   root :to => "static_pages#home"
-   get '/signup', to: 'users#new'
    get "static_pages/home"
    get "static_pages/help"
 
