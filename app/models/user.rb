@@ -19,10 +19,20 @@ class User < ActiveRecord::Base
   validates :name, presence: true, length: { maximum: 50 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }, uniqueness: {case_sensitive: false}
-  validates :password, presence: true, length: { minimum: 6 }
-  validates :password_confirmation, presence: true
+  validates :password             , length: { minimum: 6 }, :if => :validate_password?
+  validates :password_confirmation, presence: true        , :if => :validate_password?
 
+  def validate_password?
+    password.present? || password_confirmation.present?
+  end
 
+  def custom_update_attributes(params)
+    if params[:password].blank?
+      params.delete :password
+      params.delete :password_confirmation
+      update_attributes params
+    end
+  end
   private
 
   def create_remember_token

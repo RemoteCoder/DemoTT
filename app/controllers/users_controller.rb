@@ -1,8 +1,13 @@
 class UsersController < ApplicationController
   # GET /users
   # GET /users.json
+
+  before_filter :signed_in_user, only: [:index, :edit, :update]
+  before_filter :correct_user, only: [:edit, :update]
+  before_filter :admin_user, only: [:destroy]
+
   def index
-    @users = User.all
+    @users = User.order(:id).page( params[:page]).per(5)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -54,9 +59,8 @@ class UsersController < ApplicationController
   # PUT /users/1.json
   def update
     @user = User.find(params[:id])
-
     respond_to do |format|
-      if @user.update_attributes(params[:user])
+       if @user.custom_update_attributes(params[:user])
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { head :no_content }
       else
@@ -71,10 +75,23 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     @user.destroy
+    flash[:success] = "User destroyed."
+    redirect_to users_url
+  end
 
-    respond_to do |format|
-      format.html { redirect_to users_url }
-      format.json { head :no_content }
-    end
+  private
+
+  def signed_in_user
+    store_location
+    redirect_to signin_url, notice: "Please sign in" unless signed_in?
+  end
+
+  def correct_user
+    @user = User.find(params[:id])
+    redirect_to root_path unless current_user?(@user)
+  end
+
+  def admin_user
+    redirect_to(root_path) unless current_user.admin?
   end
 end
