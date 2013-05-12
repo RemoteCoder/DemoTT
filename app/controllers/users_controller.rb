@@ -8,7 +8,7 @@ class UsersController < ApplicationController
 
   def index
     @users = User.order(:id).page( params[:page]).per(5)
-
+    # Asset precompile ignore
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @users }
