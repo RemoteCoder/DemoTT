@@ -1,16 +1,18 @@
 DemoTt::Application.routes.draw do
+  root :to => "static_pages#home"
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   resources :users do
     member do
       get :following, :followers
     end
   end
-  resources :sessions, only: [:new, :create, :destroy]
+  #resources :sessions, only: [:new, :create, :destroy]
   resources :microposts, only: [:create, :destroy]
   resources :relationships, only: [:create, :destroy]
   get '/signup',  to: 'users#new'
   match '/signin',  to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete
-  root :to => "static_pages#home"
+
    get "static_pages/home"
    get "static_pages/help"
 
