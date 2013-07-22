@@ -54,6 +54,7 @@ class User < ActiveRecord::Base
   #end
 
   def self.find_for_facebook_oauth(auth, signed_in_resource=nil)
+    logger.info "Auth data=====#{auth.inspect}"
     user = User.where(:provider => auth.provider, :uid => auth.uid).first
     unless user
       user = User.create(name:auth.extra.raw_info.name,
