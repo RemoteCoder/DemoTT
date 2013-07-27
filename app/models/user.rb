@@ -57,7 +57,7 @@ class User < ActiveRecord::Base
     logger.info "Auth data=====#{auth.inspect}"
     user = User.where(:provider => auth.provider, :uid => auth.uid).first
     unless user
-      user = User.create(name:auth.extra.raw_info.name,
+      user = User.create!(name:auth.extra.raw_info.name,
                          provider:auth.provider,
                          uid:auth.uid,
                          email:auth.info.email,
