@@ -1,4 +1,5 @@
 class RealtimeController < ApplicationController
+  #skip_before_filter :authenticate
   def verify
     render :text => params["hub.challenge"]
   end
