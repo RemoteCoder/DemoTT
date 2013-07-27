@@ -17,7 +17,8 @@ DemoTt::Application.routes.draw do
   #end
    get "static_pages/home"
    get "static_pages/help"
-
+  get '/realtime' => 'realtime#verify'
+  post '/realtime' => 'realtime#change'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
