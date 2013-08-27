@@ -1,6 +1,15 @@
 DemoTt::Application.routes.draw do
+  resources :authentications
+
   root :to => "static_pages#home"
-  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
+  #devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
+
+  devise_for :users, path_names: {sign_in: "login", sign_out: "logout"},
+             controllers: {omniauth_callbacks: "authentications", registrations: "registrations"}
+
+
+  #resources :authentications
+  match "/auth/:provider/callback" => "authentications#create"
   resources :users do
     member do
       get :following, :followers
@@ -11,7 +20,7 @@ DemoTt::Application.routes.draw do
   resources :relationships, only: [:create, :destroy]
   #get '/signup',  to: 'users#new'
   #match '/signin',  to: 'sessions#new'
-  match '/signout', to: 'sessions#destroy', via: :delete
+  #match '/signout', to: 'sessions#destroy', via: :delete
   #devise_scope :user do
   #  get "sign_in", :to => "devise/sessions#new"
   #end

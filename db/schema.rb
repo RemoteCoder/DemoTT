@@ -11,7 +11,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130721210955) do
+ActiveRecord::Schema.define(:version => 20130826133012) do
+
+  create_table "authentications", :force => true do |t|
+    t.string   "user_id"
+    t.string   "provider"
+    t.string   "uid"
+    t.string   "token"
+    t.string   "token_secret"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
 
   create_table "microposts", :force => true do |t|
     t.string   "content"

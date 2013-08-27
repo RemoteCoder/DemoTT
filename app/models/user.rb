@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, :omniauth_providers => [:facebook]
+         :omniauthable
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :name ,:provider, :uid
@@ -29,6 +29,7 @@ class User < ActiveRecord::Base
                                     dependent: :destroy
   has_many :followers, through: :reverse_relationships, source: :follower
 
+  has_many :authentications
 
   before_save { |user| user.email = email.downcase }
   before_save :create_remember_token
@@ -72,6 +73,14 @@ class User < ActiveRecord::Base
         user.email = data["email"] if user.email.blank?
       end
     end
+  end
+
+  def apply_omniauth(omniauth)
+    authentications.build(:provider => omniauth['provider'], :uid => omniauth['uid'])
+  end
+
+  def password_required?
+    (authentications.empty? || !password.blank?) && super
   end
 
   def validate_password?

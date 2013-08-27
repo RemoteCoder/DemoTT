@@ -6,10 +6,13 @@ gem 'bcrypt-ruby', '3.0.1'
 gem 'faker', '1.0.1'
 #gem 'kaminari'
 gem 'kaminari-bootstrap'
-
+gem 'omniauth'
 gem 'devise'
 gem "omniauth-facebook"
+gem 'omniauth-twitter'
 gem "koala", "~> 1.7.0rc1"
+
+gem 'nifty-generators'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
@@ -54,3 +57,5 @@ end
 
 # To use debugger
 # gem 'debugger'
+
+gem "mocha", :group => :test
